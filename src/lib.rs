@@ -3,9 +3,7 @@ use wasm_bindgen::prelude::*;
 fn is_prime(n: i32) -> bool {
   if n == 2 || n == 3 {
     return true;
-  }
-
-  if n % 2 == 0 || n % 3 == 0 {
+  } else if n % 2 == 0 || n % 3 == 0 {
     return false;
   }
 
@@ -14,13 +12,11 @@ fn is_prime(n: i32) -> bool {
   {
       if n % (divisor - 1) == 0 {
         return false;
-      }
-      if n % (divisor + 1) == 0 {
+      } else if n % (divisor + 1) == 0 {
         return false;
       }
       divisor += 6;
   }
-
   return true;
 }
 
