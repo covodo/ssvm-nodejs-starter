@@ -1,19 +1,16 @@
-const { say } = require('../pkg/ssvm_nodejs_starter_lib.js');
+const express = require('express');
+const { next_prime } = require('../pkg/ssvm_wasm_rust_prime_lib.js');
 
-const http = require('http');
-const url = require('url');
-const hostname = '0.0.0.0';
+const app = express();
 const port = 3000;
+app.use(express.static(__dirname + '/public'));
+app.use(express.urlencoded({ extended: false }));
 
-const server = http.createServer((req, res) => {
-  const queryObject = url.parse(req.url,true).query;
-  if (!queryObject['name']) {
-    res.end(`Please use command curl http://${hostname}:${port}/?name=MyName \n`);
-  } else {
-    res.end(say(queryObject['name']) + '\n');
-  }
+app.get('/', (req, res) => res.redirect("/app/node/public/index.html"));
+
+app.post('/next', function (req, res) {
+  let n = parseInt(req.body.n).toString();
+  res.send(next_prime(n));
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
-});
+app.listen(port, () => console.log(`Listening at http://localhost:${port}`));
